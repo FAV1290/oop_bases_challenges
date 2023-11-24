@@ -3,9 +3,11 @@
 метод, который увеливает баланс.
 
 Задания:
-    1. Допишите логику в метод increase_balance, который должен увеличивать баланс банковского счета на значение income.
+    1. Допишите логику в метод increase_balance,
+    который должен увеличивать баланс банковского счета на значение income.
     2. Создайте экземпляр класса банковского счета и распечатайте баланс.
-    3. Увеличьте баланс счета у экземпляра класса с помощью метода increase_balance и снова распечтайте текущий баланс.
+    3. Увеличьте баланс счета у экземпляра класса с помощью метода increase_balance
+    и снова распечтайте текущий баланс.
 """
 
 
@@ -14,9 +16,15 @@ class BankAccount:
         self.owner_full_name = owner_full_name
         self.balance = balance
 
-    def increase_balance(self, income: float):
-        pass  # код писать тут
+    def increase_balance(self, income: float) -> None:
+        if income > 0:
+            self.balance += income
+        else:
+            raise ValueError('Income should have positive value')
 
 
 if __name__ == '__main__':
-    pass  # код писать тут
+    user_account = BankAccount('John Doe', 10000.0)
+    print('Balance before:', user_account.balance)
+    user_account.increase_balance(1000.5)
+    print('Balance after:', user_account.balance)
