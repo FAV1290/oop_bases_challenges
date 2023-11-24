@@ -10,18 +10,31 @@
 
 
 class TextProcessor:
-    def __init__(self, text):
+    def __init__(self, text: str):
         self.text = text
 
-    def to_upper(self):
+    def to_upper(self) -> str:
         return self.text.upper()
 
-    def summarize(self):
+    def summarize(self) -> str:
         return f'Total text length: {len(self.text)}'
+    
 
-
-# код писать тут
+class AdvancedTextProcessor(TextProcessor):
+    def summarize(self) -> str:
+        response = super().summarize()
+        response += f', total number of words in the text: {len(self.text.split())}'
+        return response
 
 
 if __name__ == '__main__':
-    pass  # код писать тут
+    old_processor = TextProcessor(
+        "Power is when we have every justification to kill, and we don't")
+    new_processor = AdvancedTextProcessor(
+        'My mama always said life was like a box of chocolates. You never know what gonna get')
+    
+    print(old_processor.to_upper())
+    print(old_processor.summarize())
+    print()
+    print(new_processor.to_upper())
+    print(new_processor.summarize())
