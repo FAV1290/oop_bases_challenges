@@ -1,7 +1,7 @@
 """
 У нас есть класс Product, который содержит в себе информацию о продукте.
 Еще у нас есть класс AlcoholProduct, но метод is_available для него не подходит, так как
-алкоголь нельзя продавать с 5 утра до 11 вечера
+алкоголь можно продавать с 5 утра до 11 вечера
 
 Задания:
     1. Переопределите метод is_available в классе AlcoholProduct с использованием super()
@@ -27,7 +27,7 @@ class Product:
 
 class AlcoholProduct(Product):
     def is_available(self) -> bool:
-        allowed_for_booze_hours = list(range(5)) + [23]
+        allowed_for_booze_hours = list(range(5, 23))
         return super().is_available() and datetime.now().hour in allowed_for_booze_hours
 
 
