@@ -12,19 +12,55 @@
 
 
 class UserManager:
-    def __init__(self):
-        self.usernames = []
+    usernames = []
 
-    def add_user(self, username):
+    def add_user(self, username: str) -> None:
         self.usernames.append(username)
 
-    def get_users(self):
+    def get_users(self) -> None:
         return self.usernames
+    
+    def show_features(self, username_to_add: str) -> None:
+        print(f'Current users: {self.get_users()}')
+        self.add_user(username_to_add)
+        print(f'User with username {username_to_add} has been added')
+        print(f'Current users: {self.get_users()}')
 
 
-# код писать тут
+class AdminManager(UserManager):
+    def ban_username(self, username: str) -> str:
+        try:
+            self.usernames.remove(username)
+            return f'User with username {username} has been banned'
+        except ValueError:
+            return f'User with username {username} was not found'
+        
+    def show_features(self, username_to_add: str, usernames_to_ban: list[str]) -> None:
+        super().show_features(username_to_add)
+        for username in usernames_to_ban:
+            ban_feedback = self.ban_username(username)
+            print(ban_feedback)
+        print(f'Current users: {self.get_users()}')
+
+
+class SuperAdminManager(AdminManager):
+    def ban_all_users(self) -> None:
+        self.usernames.clear()
+
+    def show_features(self, username_to_add: str, usernames_to_ban: list[str]) -> None:
+        super().show_features(username_to_add, usernames_to_ban)
+        self.ban_all_users()
+        print('Apocalypse now! All users have been banned')
+        print(f'Current users: {self.get_users()}')
 
 
 if __name__ == '__main__':
-    pass  # код писать тут
+    user_manager = UserManager()
+    admin_manager = AdminManager()
+    super_admin_manager = SuperAdminManager()
 
+    user_manager.show_features('victoria259')
+    print()
+    admin_manager.show_features('joe123', ['alex444', 'joe123'])
+    print()
+    super_admin_manager.show_features('maria012', ['robert349', 'maria012'])
