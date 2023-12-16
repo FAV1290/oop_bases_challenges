@@ -1,27 +1,31 @@
 """
-У нас есть класс BaseResponse, который только работает с контентом, но он не умеет генерировать headers.
-Нужно создать свой кастомный класс ответа, который сможет это делать
+У нас есть класс BaseResponse, который только работает с контентом,
+но он не умеет генерировать headers. Нужно создать свой кастомный класс ответа,
+который сможет это делать
 
 
 Задания:
-    1. Создайте класс CustomResponse, который будет наследником и от BaseResponse и от BaseHeadersMixin
+    1. Создайте класс CustomResponse,
+       который будет наследником и от BaseResponse и от BaseHeadersMixin
     2. Переопределите в нем метод generate_headers, таким образом, чтобы в базовые headers
-       еще добавлялся header Content-Length, значение у которого - байтовая длинна контента. Используйте super()
-       для этого
-    3. Создайте экземпляр класса CustomResponse и вызовите у него метод generate_headers, все ли хэдэры теперь на месте.
+       еще добавлялся header Content-Length,
+       значение у которого - байтовая длинна контента. Используйте super() для этого
+    3. Создайте экземпляр класса CustomResponse и вызовите у него метод generate_headers,
+       все ли хэдэры теперь на месте.
 """
+import json
 
 
 class BaseResponse:
     def __init__(self, content: str):
         self.content = content
 
-    def get_byte_content_length(self):
+    def get_byte_content_length(self) -> int:
         return len(self.content.encode('utf-8'))
 
 
 class BaseHeadersMixin:
-    def generate_base_headers(self):
+    def generate_base_headers(self) -> dict[str, str]:
         return {
             'Content-Type': 'application/x-www-form-urlencoded',
             'user-agent': (
@@ -30,11 +34,17 @@ class BaseHeadersMixin:
             ),
         }
 
-    def generate_headers(self):
+    def generate_headers(self) -> dict[str, str]:
         return self.generate_base_headers()
 
 
-# код писать тут
+class CustomResponse(BaseHeadersMixin, BaseResponse):
+    def generate_headers(self) -> dict[str, str]:
+        headers = super().generate_headers()
+        headers['Content-Length'] = str(self.get_byte_content_length())
+        return headers
+
 
 if __name__ == '__main__':
-    pass  # код писать тут
+    test_response = CustomResponse('12345')
+    print(json.dumps(test_response.generate_headers(), indent=4))
