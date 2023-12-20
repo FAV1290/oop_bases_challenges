@@ -2,8 +2,8 @@
 Задания:
     1. Запустите текущий код и посмотрите на вывод.
     2. Допишите класс User таким образом, чтобы при вызове print() на его инстансах появлялась информация
-       об айдишнике пользователя и его емэйле, а при вызове repr() возвращалась информация о том, является ли пользователь
-       админом
+       об айдишнике пользователя и его емэйле, а при вызове repr() возвращалась информация о том,
+       является ли пользователь админом
 """
 
 
@@ -12,6 +12,13 @@ class User:
         self.user_id = user_id
         self.email = email
         self.is_admin = is_admin
+
+    def __str__(self) -> str:
+        return f'User with id {self.user_id} and e-mail {self.email}'
+
+    def __repr__(self) -> str:
+        first_word = 'Admin' if self.is_admin else 'Non-admin'
+        return f'<{first_word} User object at 0x00000{hex(id(self)).upper()[2:]}>'
 
 
 if __name__ == '__main__':
